@@ -39,3 +39,9 @@ git clone https://github.com/wlonestar/HHU_URP_auto_login.git
 2. 由于不确定学校是否会对教务登录接口进行更改，所以该仓库具有时效性
 
 3. 爬虫小白作品，欢迎批评指正
+
+## 赞助我
+
+如果您觉得这个项目还不错的话，可以请作者喝杯咖啡 🤩
+
+![](https://mypic-1305118058.cos.ap-hongkong.myqcloud.com/img/money.jpg)
