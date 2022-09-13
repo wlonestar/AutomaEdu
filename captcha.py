@@ -30,7 +30,7 @@ def process_data(pic_id, src, dst):
             r, g, b = img.getpixel((x, y))
             low = 50
             up = 256
-            if r == 0 and r == 0 and b == 0:
+            if r == 0 and g == 0 and b == 0:
                 img.putpixel((x, y), (255, 255, 255))
             if r in range(low) and g in range(low) and b in range(low):
                 img.putpixel((x, y), (255, 255, 255))
