@@ -4,8 +4,8 @@ import logging
 import requests
 
 from bs4 import BeautifulSoup
-from md5 import *
 from captcha import captcha_code
+import hashlib
 
 USERNAME = 'xxxxxxxxxx'
 PASSWORD = 'xxxxxxxxxx'
@@ -63,10 +63,10 @@ class Request(object):
     def login(self):
         if self.times > 0:
             print('username:', self.username)
-            print('password(encoded):', md5.hex_md5(self.password))
+            print('password(encoded):', hashlib.md5(bytes(self.password,encoding = 'utf-8')).hexdigest())
             post_data = {
                 'j_username': self.username,
-                'j_password': md5.hex_md5(self.password),
+                'j_password': hashlib.md5(bytes(self.password,encoding = 'utf-8')).hexdigest(),
                 'j_captcha': self.captcha(),
             }
 
