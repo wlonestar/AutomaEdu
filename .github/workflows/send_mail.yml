@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
         subject: 空闲教室
-        body: /template/result.html
+        body: file://template/result.html
         to: wlonestar@163.com
         from: GitHub Actions
         content_type: text/html
