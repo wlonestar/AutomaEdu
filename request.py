@@ -4,7 +4,9 @@ import logging
 
 import requests
 from bs4 import BeautifulSoup
+
 from captcha import captcha_code
+from timeofday import *
 
 Host = 'jwxs.hhu.edu.cn'
 prefix = 'http://jwxs.hhu.edu.cn/'
@@ -27,8 +29,23 @@ campus_code = {
 }
 
 teaching_num = {
-    '为学楼': '61',
-    '厚德楼': '62',
+    61: '为学楼',
+    62: '厚德楼',
+}
+
+classtime = {
+    1: '第1节<br>08:00-08:45',
+    2: '第2节<br>08:50-09:35',
+    3: '第3节<br>09:50-10:35',
+    4: '第4节<br>10:40-11:25',
+    5: '第5节<br>11:30-12:15',
+    6: '第6节<br>14:00-14:45',
+    7: '第7节<br>14:50-15:35',
+    8: '第8节<br>15:50-16:35',
+    9: '第9节<br>16:40-17:25',
+    10: '第10节<br>18:30-19:15',
+    11: '第11节<br>19:20-20:05',
+    12: '第12节<br>20:10-20:55',
 }
 
 
@@ -99,9 +116,36 @@ class Request(object):
         logging.debug(sets)
         return sets
 
+    def search_today(self):
+        code = 3
+        # tea_codes = [61, 62]
+        tea_code = 61
+        week_num = get_weekday()
+        classrooms = []
+        for i in range(1, 13):
+            section = str(week_num) + '/' + str(i)
+            # for tea_code in tea_codes:
+            param = {
+                'weeks': get_week_num(),
+                'jslxdm': '',
+                'codeCampusListNumber': code,
+                'teaNum': tea_code,
+                'wSection': section,
+                'pageNum': 1,
+                'pageSize': 100,
+            }
+            ret = self.search_free_classroom(param)
+            # print(ret)
+            classroom = {
+                'time': classtime.get(i),
+                'rooms': ", ".join(ret)
+            }
+            classrooms.append(classroom)
+        return classrooms
+
     def search_aweek(self, week):
         code = campus_code.get('常州校区')
-        tea_code = teaching_num.get('为学楼')
+        tea_code = teaching_num.get(61)
         sections = [
             ['1/1', '2/1', '3/1', '4/1', '5/1', '6/1', '7/1'],
             ['1/2', '2/2', '3/2', '4/2', '5/2', '6/2', '7/2'],

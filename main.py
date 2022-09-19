@@ -1,7 +1,25 @@
 import argparse
 import logging
+import codecs
+import glob
+import os.path
+from jinja2 import Environment, FileSystemLoader
 
+import timeofday
 from request import Request
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+env = Environment(loader=FileSystemLoader(current_directory))
+template = glob.glob('template/mail.j2')[0]
+file = 'template/result.html'
+
+
+def write2html(params, template_file, filename):
+    res = env.get_template(template_file).render(params)
+    test = codecs.open(filename, 'w', 'utf-8')
+    test.write(res)
+    test.close()
+    print('success, result in template/result.html')
 
 
 # read parameters from arguments
@@ -22,4 +40,9 @@ if __name__ == "__main__":
     logging.debug(USERNAME, PASSWORD)
     request = Request(USERNAME, PASSWORD)
     request.login()
-    request.search_aweek(4)
+    ret = request.search_today()
+    param = {
+        'classrooms': ret,
+        'timeofday': timeofday.get_format_date()
+    }
+    write2html(param, template, file)
