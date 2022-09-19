@@ -1,8 +1,9 @@
 name: send mail
 
 on:
+  push:
   schedule:
-    - cron: "28 23 * * *"
+    - cron: "20 22 * * *"
 #   push:
 #     branches: [ "master" ]
 

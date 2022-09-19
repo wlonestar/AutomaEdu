@@ -1,17 +1,19 @@
 from datetime import datetime
 
+import pytz
+
 
 # only for 2022-2023 1
-def get_week_num(d=datetime.today()):
+def get_week_num(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
     return d.isocalendar().week - 34
 
 
 # mon -> 1, ect..
-def get_weekday(d=datetime.today()):
+def get_weekday(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
     return datetime.weekday(d) + 1
 
 
-def get_format_date(d=datetime.today()):
+def get_format_date(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
     return d.strftime('%Y年%m月%d日')
 
 
