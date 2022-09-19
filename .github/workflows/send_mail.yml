@@ -22,7 +22,10 @@ jobs:
         pip install jinja2 ddddocr requests pillow beautifulsoup4 lxml
     - name: execute py script
       run: |
-        python main.py -u ${{ secrets.HHU_ID }}} -p ${{ secrets.HHU_PASSWORD }}
+        python main.py -u $Username -p $Password
+      env:
+        Username: ${{ secrets.HHU_ID }}
+        Password: ${{ secrets.HHU_PASSWORD }}
     - name: send email
       uses: dawidd6/action-send-mail@v2
       with:
