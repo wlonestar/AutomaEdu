@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 from request import Request
 
@@ -18,7 +19,7 @@ def config():
 # python main.py -u <username> -p <password>
 if __name__ == "__main__":
     USERNAME, PASSWORD = config()
-    print(USERNAME, PASSWORD)
+    logging.debug(USERNAME, PASSWORD)
     request = Request(USERNAME, PASSWORD)
     request.login()
     request.search_aweek(4)
