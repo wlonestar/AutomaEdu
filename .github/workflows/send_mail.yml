@@ -20,7 +20,7 @@ jobs:
         python-version: 3.9
     - name: install dependencies
       run: |
-        pip install jinja2 ddddocr requests pillow beautifulsoup4 lxml
+        pip install jinja2 ddddocr requests pillow beautifulsoup4 lxml pytz
     - name: execute py script
       run: |
         python main.py -u $Username -p $Password
