@@ -1,454 +1,250 @@
-<!doctype html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Simple Transactional Email</title>
-  <style>
-    /* -------------------------------------
-        GLOBAL RESETS
-    ------------------------------------- */
-
-    /*All the styling goes here*/
-
-    img {
-      border: none;
-      -ms-interpolation-mode: bicubic;
-      max-width: 100%;
+  <title>Your Message Subject or Title</title>
+  <style type="text/css">
+    #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
+    body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
+    /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+    .ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+    #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
+    /* End reset */
+    /* Some sensible defaults for images
+    1. "-ms-interpolation-mode: bicubic" works to help ie properly resize images in IE. (if you are resizing them using the width and height attributes)
+    2. "border:none" removes border when linking images.
+    3. Updated the common Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly adds in an extra space below images when using non IE browsers. You may not always want all of your images to be block elements. Apply the "image_fix" class to any image you need to fix.
+    Bring inline: Yes.
+    */
+    img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+    a img {border:none;}
+    .image_fix {display:block;}
+    /** Yahoo paragraph fix: removes the proper spacing or the paragraph (p) tag. To correct we set the top/bottom margin to 1em in the head of the document. Simple fix with little effect on other styling. NOTE: It is also common to use two breaks instead of the paragraph tag but I think this way is cleaner and more semantic. NOTE: This example recommends 1em. More info on setting web defaults: http://www.w3.org/TR/CSS21/sample.html or http://meiert.com/en/blog/20070922/user-agent-style-sheets/
+    Bring inline: Yes.
+    **/
+    p {margin: 1em 0;}
+    /** Hotmail header color reset: Hotmail replaces your header color styles with a green color on H2, H3, H4, H5, and H6 tags. In this example, the color is reset to black for a non-linked header, blue for a linked header, red for an active header (limited support), and purple for a visited header (limited support).  Replace with your choice of color. The !important is really what is overriding Hotmail's styling. Hotmail also sets the H1 and H2 tags to the same size.
+    Bring inline: Yes.
+    **/
+    h1, h2, h3, h4, h5, h6 {color: black !important;}
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
+    h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+      color: red !important; /* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
     }
-
-    body {
-      background-color: #f6f6f6;
-      font-family: sans-serif;
-      -webkit-font-smoothing: antialiased;
-      font-size: 14px;
-      line-height: 1.4;
-      margin: 0;
-      padding: 0;
-      -ms-text-size-adjust: 100%;
-      -webkit-text-size-adjust: 100%;
+    h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+      color: purple !important; /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
     }
-
-    table {
-      border-collapse: separate;
-      mso-table-lspace: 0pt;
-      mso-table-rspace: 0pt;
-      width: 100%; }
-    table td {
-      font-family: sans-serif;
-      font-size: 14px;
-      vertical-align: top;
-    }
-
-    /* -------------------------------------
-        BODY & CONTAINER
-    ------------------------------------- */
-
-    .body {
-      background-color: #f6f6f6;
-      width: 100%;
-    }
-
-    /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
-    .container {
-      display: block;
-      margin: 0 auto !important;
-      /* makes it centered */
-      max-width: 580px;
-      padding: 10px;
-      width: 580px;
-    }
-
-    /* This should also be a block element, so that it will fill 100% of the .container */
-    .content {
-      box-sizing: border-box;
-      display: block;
-      margin: 0 auto;
-      max-width: 580px;
-      padding: 10px;
-    }
-
-    /* -------------------------------------
-        HEADER, FOOTER, MAIN
-    ------------------------------------- */
-    .main {
-      background: #ffffff;
-      border-radius: 3px;
-      width: 100%;
-    }
-
-    .wrapper {
-      box-sizing: border-box;
-      padding: 20px;
-    }
-
-    .content-block {
-      padding-bottom: 10px;
-      padding-top: 10px;
-    }
-
-    .footer {
-      clear: both;
-      margin-top: 10px;
-      text-align: center;
-      width: 100%;
-    }
-    .footer td,
-    .footer p,
-    .footer span,
-    .footer a {
-      color: #999999;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    /* -------------------------------------
-        TYPOGRAPHY
-    ------------------------------------- */
-    h1,
-    h2,
-    h3,
-    h4 {
-      color: #000000;
-      font-family: sans-serif;
-      font-weight: 400;
-      line-height: 1.4;
-      margin: 0;
-      margin-bottom: 30px;
-    }
-
-    h1 {
-      font-size: 35px;
-      font-weight: 300;
-      text-align: center;
-      text-transform: capitalize;
-    }
-
-    p,
-    ul,
-    ol {
-      font-family: sans-serif;
-      font-size: 14px;
-      font-weight: normal;
-      margin: 0;
-      margin-bottom: 15px;
-    }
-    p li,
-    ul li,
-    ol li {
-      list-style-position: inside;
-      margin-left: 5px;
-    }
-
-    a {
-      color: #3498db;
-      text-decoration: underline;
-    }
-
-    /* -------------------------------------
-        BUTTONS
-    ------------------------------------- */
-    .btn {
-      box-sizing: border-box;
-      width: 100%; }
-    .btn > tbody > tr > td {
-      padding-bottom: 15px; }
-    .btn table {
-      width: auto;
-    }
-    .btn table td {
-      background-color: #ffffff;
-      border-radius: 5px;
-      text-align: center;
-    }
-    .btn a {
-      background-color: #ffffff;
-      border: solid 1px #3498db;
-      border-radius: 5px;
-      box-sizing: border-box;
-      color: #3498db;
-      cursor: pointer;
-      display: inline-block;
-      font-size: 14px;
-      font-weight: bold;
-      margin: 0;
-      padding: 12px 25px;
-      text-decoration: none;
-      text-transform: capitalize;
-    }
-
-    .btn-primary table td {
-      background-color: #3498db;
-    }
-
-    .btn-primary a {
-      background-color: #3498db;
-      border-color: #3498db;
-      color: #ffffff;
-    }
-
-    /* -------------------------------------
-        OTHER STYLES THAT MIGHT BE USEFUL
-    ------------------------------------- */
-    .last {
-      margin-bottom: 0;
-    }
-
-    .first {
-      margin-top: 0;
-    }
-
-    .align-center {
-      text-align: center;
-    }
-
-    .align-right {
-      text-align: right;
-    }
-
-    .align-left {
-      text-align: left;
-    }
-
-    .clear {
-      clear: both;
-    }
-
-    .mt0 {
-      margin-top: 0;
-    }
-
-    .mb0 {
-      margin-bottom: 0;
-    }
-
-    .preheader {
-      color: transparent;
-      display: none;
-      height: 0;
-      max-height: 0;
-      max-width: 0;
-      opacity: 0;
-      overflow: hidden;
-      mso-hide: all;
-      visibility: hidden;
-      width: 0;
-    }
-
-    .powered-by a {
-      text-decoration: none;
-    }
-
-    hr {
-      border: 0;
-      border-bottom: 1px solid #f6f6f6;
-      margin: 20px 0;
-    }
-
-    /* -------------------------------------
-        RESPONSIVE AND MOBILE FRIENDLY STYLES
-    ------------------------------------- */
-    @media only screen and (max-width: 620px) {
-      table.body h1 {
-        font-size: 28px !important;
-        margin-bottom: 10px !important;
-      }
-      table.body p,
-      table.body ul,
-      table.body ol,
-      table.body td,
-      table.body span,
-      table.body a {
-        font-size: 16px !important;
-      }
-      table.body .wrapper,
-      table.body .article {
-        padding: 10px !important;
-      }
-      table.body .content {
-        padding: 0 !important;
-      }
-      table.body .container {
-        padding: 0 !important;
-        width: 100% !important;
-      }
-      table.body .main {
-        border-left-width: 0 !important;
-        border-radius: 0 !important;
-        border-right-width: 0 !important;
-      }
-      table.body .btn table {
-        width: 100% !important;
-      }
-      table.body .btn a {
-        width: 100% !important;
-      }
-      table.body .img-responsive {
-        height: auto !important;
-        max-width: 100% !important;
-        width: auto !important;
-      }
-    }
-
-    /* -------------------------------------
-        PRESERVE THESE STYLES IN THE HEAD
-    ------------------------------------- */
-    @media all {
-      .ExternalClass {
-        width: 100%;
-      }
-      .ExternalClass,
-      .ExternalClass p,
-      .ExternalClass span,
-      .ExternalClass font,
-      .ExternalClass td,
-      .ExternalClass div {
-        line-height: 100%;
-      }
-      .apple-link a {
-        color: inherit !important;
-        font-family: inherit !important;
-        font-size: inherit !important;
-        font-weight: inherit !important;
-        line-height: inherit !important;
-        text-decoration: none !important;
-      }
-      #MessageViewBody a {
-        color: inherit;
+    /** Outlook 07, 10 Padding issue: These "newer" versions of Outlook add some padding around table cells potentially throwing off your perfectly pixeled table.  The issue can cause added space and also throw off borders completely.  Use this fix in your header or inline to safely fix your table woes.
+    More info: http://www.ianhoar.com/2008/04/29/outlook-2007-borders-and-1px-padding-on-table-cells/
+    http://www.campaignmonitor.com/blog/post/3392/1px-borders-padding-on-table-cells-in-outlook-07/
+    H/T @edmelly
+    Bring inline: No.
+    **/
+    table td {border-collapse: collapse;}
+    /** Remove spacing around Outlook 07, 10 tables
+    More info : http://www.campaignmonitor.com/blog/post/3694/removing-spacing-from-around-tables-in-outlook-2007-and-2010/
+    Bring inline: Yes
+    **/
+    table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+    /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email, bring your styles inline.  Your link colors will be uniform across clients when brought inline.
+    Bring inline: Yes. */
+    a {color: orange;}
+    /* Or to go the gold star route...
+    a:link { color: orange; }
+    a:visited { color: blue; }
+    a:hover { color: green; }
+    */
+    /***************************************************
+    ****************************************************
+    MOBILE TARGETING
+    Use @media queries with care.  You should not bring these styles inline -- so it's recommended to apply them AFTER you bring the other stlying inline.
+    Note: test carefully with Yahoo.
+    Note 2: Don't bring anything below this line inline.
+    ****************************************************
+    ***************************************************/
+    /* NOTE: To properly use @media queries and play nice with yahoo mail, use attribute selectors in place of class, id declarations.
+    table[class=classname]
+    Read more: http://www.campaignmonitor.com/blog/post/3457/media-query-issues-in-yahoo-mail-mobile-email/
+    */
+    @media only screen and (max-device-width: 480px) {
+      /* A nice and clean way to target phone numbers you want clickable and avoid a mobile phone from linking other numbers that look like, but are not phone numbers.  Use these two blocks of code to "unstyle" any numbers that may be linked.  The second block gives you a class to apply with a span tag to the numbers you would like linked and styled.
+      Inspired by Campaign Monitor's article on using phone numbers in email: http://www.campaignmonitor.com/blog/post/3571/using-phone-numbers-in-html-email/.
+      Step 1 (Step 2: line 224)
+      */
+      a[href^="tel"], a[href^="sms"] {
         text-decoration: none;
-        font-size: inherit;
-        font-family: inherit;
-        font-weight: inherit;
-        line-height: inherit;
+        color: black; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
       }
-      .btn-primary table td:hover {
-        background-color: #34495e !important;
-      }
-      .btn-primary a:hover {
-        background-color: #34495e !important;
-        border-color: #34495e !important;
+      .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: default;
+        color: orange !important; /* or whatever your want */
+        pointer-events: auto;
+        cursor: default;
       }
     }
-
+    /* More Specific Targeting */
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      /* You guessed it, ipad (tablets, smaller screens, etc) */
+      /* Step 1a: Repeating for the iPad */
+      a[href^="tel"], a[href^="sms"] {
+        text-decoration: none;
+        color: blue; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
+      }
+      .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: default;
+        color: orange !important;
+        pointer-events: auto;
+        cursor: default;
+      }
+    }
+    @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+      /* Put your iPhone 4g styles in here */
+    }
+    /* Following Android targeting from:
+    http://developer.android.com/guide/webapps/targeting.html
+    http://pugetworks.com/2011/04/css-media-queries-for-targeting-different-mobile-devices/  */
+    @media only screen and (-webkit-device-pixel-ratio:.75){
+      /* Put CSS for low density (ldpi) Android layouts in here */
+    }
+    @media only screen and (-webkit-device-pixel-ratio:1){
+      /* Put CSS for medium density (mdpi) Android layouts in here */
+    }
+    @media only screen and (-webkit-device-pixel-ratio:1.5){
+      /* Put CSS for high density (hdpi) Android layouts in here */
+    }
+    /* end Android targeting */
   </style>
+
+  <!-- Targeting Windows Mobile -->
+  <!--[if IEMobile 7]>
+  <style type="text/css">
+  </style>
+  <![endif]-->
+
+  <!-- ***********************************************
+  ****************************************************
+  END MOBILE TARGETING
+  ****************************************************
+  ************************************************ -->
+
+  <!--[if gte mso 9]>
+  <style>
+    /* Target Outlook 2007 and 2010 */
+  </style>
+  <![endif]-->
 </head>
 <body>
-<span class="preheader">今日空闲教室</span>
+<!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
+<!--<table cellpadding="0" cellspacing="0" border="5" id="backgroundTable">-->
+<!--  <tr>-->
+<!--    <td>-->
 
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
-  <tr>
-    <td>&nbsp;</td>
-    <td class="container">
-      <div class="content">
+<!--      &lt;!&ndash; Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. &ndash;&gt;-->
+<!--      <table cellpadding="0" cellspacing="0" border="0" align="center">-->
+<!--        <tr>-->
+<!--          <td width="200" valign="top"></td>-->
+<!--          <td width="200" valign="top"></td>-->
+<!--          <td width="200" valign="top"></td>-->
+<!--        </tr>-->
+<!--      </table>-->
 
-        <!-- START CENTERED WHITE CONTAINER -->
-        <table role="presentation" class="main">
+<!--      &lt;!&ndash; End example table &ndash;&gt;-->
 
-          <!-- START MAIN CONTENT AREA -->
-          <tr>
-            <td class="wrapper">
+<!--      &lt;!&ndash; Yahoo Link color fix updated: Simply bring your link styling inline. &ndash;&gt;-->
+<!--      <a href="http://htmlemailboilerplate.com" target ="_blank" title="Styling Links" style="color: orange; text-decoration: none;">Coloring Links appropriately</a>-->
 
-              <table class="table table-striped table-bordered" border="1" style="border-collapse: collapse;">
-                <thead>
-                <tr>
-                  <th width="150">节次</th>
-                  <th>空闲教室</th>
-                </tr>
-                </thead>
-                <tbody>
+<!--      &lt;!&ndash; Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly adds in an extra space below images when using non IE browsers.  This can be especially painful when you putting images on top of each other or putting back together an image you spliced for formatting reasons.  Either way, you can add the 'image_fix' class to remove that space below the image.  Make sure to set alignment (don't use float) on your images if you are placing them inline with text.&ndash;&gt;-->
+<!--      <img class="image_fix" src="full asdf to image" alt="Your alt text" title="Your title text" width="x" height="x" />-->
 
-                <tr>
-                  <td>第1节<br>08:00-08:45</td>
-                  <td style="color: #586069">A207, B102, B103, B104, B203, B204, B205, B206, B207, B208, B210, B211, B301, B305, B401, B402, B405, B501, B502, C109, C111, C112, C113, C114, C115, C116, C206, C213, C214, C302, C303, C306, C402, C403, C405, C406, D107, D108, D111, D208, D211</td>
-                </tr>
+<!--      &lt;!&ndash; Step 2: Working with telephone numbers (including sms prompts).  Use the "mobile_link" class with a span tag to control what number links and what doesn't in mobile clients. &ndash;&gt;-->
+<!--      <span class="mobile_link">123-456-7890</span>-->
 
-                <tr>
-                  <td>第2节<br>08:50-09:35</td>
-                  <td style="color: #586069">A207, B102, B103, B104, B203, B204, B205, B206, B207, B208, B210, B211, B301, B305, B401, B402, B405, B501, B502, C109, C111, C112, C113, C114, C115, C116, C206, C213, C214, C302, C303, C306, C402, C403, C405, C406, D107, D108, D111, D208, D211</td>
-                </tr>
+<!--    </td>-->
+<!--  </tr>-->
+<!--</table>-->
+<!-- End of wrapper table -->
 
-                <tr>
-                  <td>第3节<br>09:50-10:35</td>
-                  <td style="color: #586069">A107, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B211, B302, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C206, C214, C302, C303, C306, C403, C405, C406, D108, D207, D208, D211</td>
-                </tr>
+  <h3 style="text-align: center;">空闲教室</h3>
+  <p style="text-align: center; padding-bottom: 20px; color: #586069">今日（2022年09月20日）</p>
 
-                <tr>
-                  <td>第4节<br>10:40-11:25</td>
-                  <td style="color: #586069">A107, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B211, B302, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C206, C214, C302, C303, C306, C403, C405, C406, D108, D207, D208, D211</td>
-                </tr>
+  <p>为学楼空闲教室</p>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th class="col-4">节次</th>
+      <th>空闲教室</th>
+    </tr>
+    </thead>
+    <tbody>
 
-                <tr>
-                  <td>第5节<br>11:30-12:15</td>
-                  <td style="color: #586069">A106, A107, A108, A209, B101, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B301, B302, B304, B305, B401, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C206, C207, C208, C210, C211, C213, C214, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第1节<br>08:00-08:45</td>
+      <td style="color: #586069">A207, B102, B103, B104, B203, B204, B205, B206, B207, B208, B210, B211, B301, B305, B401, B402, B405, B501, B502, C109, C111, C112, C113, C114, C115, C116, C206, C213, C214, C302, C303, C306, C402, C403, C405, C406, D107, D108, D111, D208, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第6节<br>14:00-14:45</td>
-                  <td style="color: #586069">A106, A208, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B302, B305, B402, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C208, C211, C213, C216, C306, C402, C403, C405, C406, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第2节<br>08:50-09:35</td>
+      <td style="color: #586069">A207, B102, B103, B104, B203, B204, B205, B206, B207, B208, B210, B211, B301, B305, B401, B402, B405, B501, B502, C109, C111, C112, C113, C114, C115, C116, C206, C213, C214, C302, C303, C306, C402, C403, C405, C406, D107, D108, D111, D208, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第7节<br>14:50-15:35</td>
-                  <td style="color: #586069">A106, A208, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B302, B305, B402, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C208, C211, C213, C216, C306, C402, C403, C405, C406, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第3节<br>09:50-10:35</td>
+      <td style="color: #586069">A107, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B211, B302, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C206, C214, C302, C303, C306, C403, C405, C406, D108, D207, D208, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第8节<br>15:50-16:35</td>
-                  <td style="color: #586069">A106, A107, B101, B103, B104, B202, B203, B204, B205, B207, B208, B210, B211, B301, B302, B304, B402, B404, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C208, C210, C211, C213, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209</td>
-                </tr>
+    <tr>
+      <td>第4节<br>10:40-11:25</td>
+      <td style="color: #586069">A107, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B211, B302, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C206, C214, C302, C303, C306, C403, C405, C406, D108, D207, D208, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第9节<br>16:40-17:25</td>
-                  <td style="color: #586069">A106, A107, B101, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B301, B302, B304, B402, B404, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C208, C210, C211, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209</td>
-                </tr>
+    <tr>
+      <td>第5节<br>11:30-12:15</td>
+      <td style="color: #586069">A106, A107, A108, A209, B101, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B301, B302, B304, B305, B401, B402, B404, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C206, C207, C208, C210, C211, C213, C214, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第10节<br>18:30-19:15</td>
-                  <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第6节<br>14:00-14:45</td>
+      <td style="color: #586069">A106, A208, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B302, B305, B402, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C208, C211, C213, C216, C306, C402, C403, C405, C406, D111, D207, D208, D209, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第11节<br>19:20-20:05</td>
-                  <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第7节<br>14:50-15:35</td>
+      <td style="color: #586069">A106, A208, A209, B102, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B212, B302, B305, B402, B405, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C208, C211, C213, C216, C306, C402, C403, C405, C406, D111, D207, D208, D209, D211</td>
+    </tr>
 
-                <tr>
-                  <td>第12节<br>20:10-20:55</td>
-                  <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
-                </tr>
+    <tr>
+      <td>第8节<br>15:50-16:35</td>
+      <td style="color: #586069">A106, A107, B101, B103, B104, B202, B203, B204, B205, B207, B208, B210, B211, B301, B302, B304, B402, B404, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C208, C210, C211, C213, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209</td>
+    </tr>
 
-                </tbody>
-              </table>
+    <tr>
+      <td>第9节<br>16:40-17:25</td>
+      <td style="color: #586069">A106, A107, B101, B103, B104, B202, B203, B204, B205, B206, B207, B208, B210, B211, B301, B302, B304, B402, B404, B501, B502, B504, B505, C109, C111, C112, C113, C114, C115, C116, C117, C208, C210, C211, C216, C302, C303, C306, C402, C403, C405, C406, D107, D108, D109, D111, D207, D208, D209</td>
+    </tr>
 
-            </td>
-          </tr>
+    <tr>
+      <td>第10节<br>18:30-19:15</td>
+      <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
+    </tr>
 
-          <!-- END MAIN CONTENT AREA -->
-        </table>
-        <!-- END CENTERED WHITE CONTAINER -->
+    <tr>
+      <td>第11节<br>19:20-20:05</td>
+      <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
+    </tr>
 
-        <!-- START FOOTER -->
-<!--        <div class="footer">-->
-<!--          <table role="presentation" border="0" cellpadding="0" cellspacing="0">-->
-<!--            <tr>-->
-<!--              <td class="content-block">-->
-<!--                <span class="apple-link">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>-->
-<!--                <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td class="content-block powered-by">-->
-<!--                Powered by <a href="http://htmlemail.io">HTMLemail</a>.-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </table>-->
-<!--        </div>-->
-        <!-- END FOOTER -->
+    <tr>
+      <td>第12节<br>20:10-20:55</td>
+      <td style="color: #586069">A106, A107, A207, A208, A209, B202, B401, B402, C113, C114, C115, C116, C212, C214, C216, C306, D107, D108, D109, D111, D207, D208, D209, D211</td>
+    </tr>
 
-      </div>
-    </td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+    </tbody>
+  </table>
+
 </body>
 </html>

@@ -333,77 +333,72 @@
   </style>
 </head>
 <body>
-<span class="preheader">今日空闲教室</span>
+  <span class="preheader">今日空闲教室</span>
 
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
-  <tr>
-    <td>&nbsp;</td>
-    <td class="container">
-      <div class="content">
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+      <td>&nbsp;</td>
+      <td class="container">
+        <div class="content">
 
-        <!-- START CENTERED WHITE CONTAINER -->
-        <table role="presentation" class="main">
+          <!-- START CENTERED WHITE CONTAINER -->
+          <table role="presentation" class="main">
 
-          <!-- START MAIN CONTENT AREA -->
-          <tr>
-            <td class="wrapper">
+            <!-- START MAIN CONTENT AREA -->
+            <tr>
+              <td class="wrapper">
 
-              <h3 style="text-align: center;">空闲教室</h3>
-              <p style="text-align: center; padding-bottom: 20px; color: #586069">今日（{{ daytime }}）</p>
-              {% for result in results %}
-              <p style="margin-left: 20px">{{ result.tea }}空闲教室</p>
-              <table class="table table-striped table-bordered" border="1" style="border-collapse: collapse;">
-                <thead>
-                  <tr>
-                    <th width="150">节次</th>
-                    <th>空闲教室</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for classroom in result.classrooms %}
-                  <tr>
-                    <td>{{ classroom.time }}</td>
-                    <td style="color: #586069">{{ classroom.rooms }}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-              {% endfor %}
+                <h3 style="text-align: center;">空闲教室</h3>
+                <p style="text-align: center; padding-bottom: 20px; color: #586069">今日（{{ daytime }}）</p>
+                {% for result in results %}
+                <p style="margin-left: 20px">{{ result.tea }}空闲教室</p>
+                <table class="table table-striped table-bordered" border="1" style="border-collapse: collapse; margin-bottom: 30px">
+                  <thead>
+                    <tr>
+                      <th class="content-block">节次</th>
+                      <th>空闲教室</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for classroom in result.classrooms %}
+                    <tr>
+                      <td class="content-block"><p>{{ classroom.time }}</p></td>
+                      <td style="color: #586069">{{ classroom.rooms }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% endfor %}
 
-            </td>
-          </tr>
+              </td>
+            </tr>
 
-          <!-- END MAIN CONTENT AREA -->
-        </table>
-        <!-- END CENTERED WHITE CONTAINER -->
+            <!-- END MAIN CONTENT AREA -->
+          </table>
+          <!-- END CENTERED WHITE CONTAINER -->
 
-        <!-- START FOOTER -->
-<!--        <div class="footer">-->
-<!--          <table role="presentation" border="0" cellpadding="0" cellspacing="0">-->
-<!--            <tr>-->
-<!--              <td class="content-block">-->
-<!--                <span class="apple-link">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>-->
-<!--                <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td class="content-block powered-by">-->
-<!--                Powered by <a href="http://htmlemail.io">HTMLemail</a>.-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </table>-->
-<!--        </div>-->
-        <!-- END FOOTER -->
+          <!-- START FOOTER -->
+  <!--        <div class="footer">-->
+  <!--          <table role="presentation" border="0" cellpadding="0" cellspacing="0">-->
+  <!--            <tr>-->
+  <!--              <td class="content-block">-->
+  <!--                <span class="apple-link">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>-->
+  <!--                <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.-->
+  <!--              </td>-->
+  <!--            </tr>-->
+  <!--            <tr>-->
+  <!--              <td class="content-block powered-by">-->
+  <!--                Powered by <a href="http://htmlemail.io">HTMLemail</a>.-->
+  <!--              </td>-->
+  <!--            </tr>-->
+  <!--          </table>-->
+  <!--        </div>-->
+          <!-- END FOOTER -->
 
-      </div>
-    </td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-</body>
-</html>
-
-<body style="max-width=12">
-
+        </div>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
 </body>
 </html>
