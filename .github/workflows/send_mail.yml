@@ -1,6 +1,7 @@
 name: send mail
 
 on:
+#  push:
   schedule:
     - cron: "20 22 * * *"
 
@@ -22,7 +23,7 @@ jobs:
       run: |
         python main.py -u $Username -p $Password
       env:
-        Username: ${{ secrets.HHU_ID }}
+        Username: ${{ secrets.HHU_USERNAME }}
         Password: ${{ secrets.HHU_PASSWORD }}
     - name: send email
       uses: dawidd6/action-send-mail@v2
@@ -33,7 +34,7 @@ jobs:
         password: ${{ secrets.MAIL_PASSWORD }}
         subject: 今日空闲教室
         body: file://template/result.html
-        to: wlonestar@163.com
+        to: ${{ secrets.EMAIL }}
         from: GitHub Actions
         content_type: text/html
 

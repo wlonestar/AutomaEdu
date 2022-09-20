@@ -24,15 +24,23 @@ python main.py -u <username> -p <password>
 
 ## 部署
 
-todo
+Fork 本项目，启用 GitHub Actions，添加下列仓库密钥：
+
+- `HHU_USERNAME`: URP 教务系统用户名
+- `HHU_PASSWORD`: URP 教务系统密码
+- `MAIL_USERNAME`: 邮箱服务发件邮箱
+- `MAIL_PASSWORD`: 邮箱服务发件邮箱授权密码
+- `EMAIL`: 收件邮箱
 
 ## 用到的 Python 库
 
+- [requests](https://pypi.org/project/requests/)
 - [BeautifulSoup4](https://pypi.org/project/beautifulsoup4/)
-
 - [ddddocr](https://github.com/sml2h3/ddddocr)
-
-- [Js2Py](https://pypi.org/project/Js2Py/)
+- [Pillow](https://pillow.readthedocs.io/en/stable/)
+- [lxml](https://pypi.org/project/lxml/)
+- [pytz](https://pypi.org/project/pytz/)
+- [jinja2](https://pypi.org/project/Jinja2/)
 
 ## 注意事项
 
