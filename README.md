@@ -1,5 +1,7 @@
 # 河海大学教务系统自动登录脚本
 
+[![send mail](https://github.com/wlonestar/HHU_URP_auto_login/actions/workflows/send_mail.yml/badge.svg)](https://github.com/wlonestar/HHU_URP_auto_login/actions/workflows/send_mail.yml)
+
 ## 关于这个项目
 
 学校教务系统的登录有效期很短，一天之内想多次访问教务必须每次输验证码，很麻烦。
