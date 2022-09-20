@@ -14,6 +14,10 @@ template = glob.glob('template/mail.j2')[0]
 file = 'template/result.html'
 
 
+# write string to html using template
+# params: map
+# template_file: jinja2 template
+# filename: html file
 def write2html(params, template_file, filename):
     res = env.get_template(template_file).render(params)
     test = codecs.open(filename, 'w', 'utf-8')
@@ -42,7 +46,7 @@ if __name__ == "__main__":
     request.login()
     ret = request.search_today()
     param = {
-        'classrooms': ret,
-        'timeofday': timeofday.get_format_date()
+        'results': ret,
+        'daytime': timeofday.get_format_date()
     }
     write2html(param, template, file)

@@ -6,24 +6,27 @@
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
-<body>
-    <h3>今日（{{ timeofday }}）为学楼空闲教室</h3>
-    <table class="table table-striped">
+<body style="padding: 10px 10px">
+    <h3 style="text-align: center;">空闲教室</h3>
+    <p style="text-align: center; padding-bottom: 20px; color: #586069">今日（{{ daytime }}）</p>
+    {% for result in results %}
+    <p>{{ result.tea }}空闲教室</p>
+    <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th class="col-2">节次</th>
+            <th class="col-4">节次</th>
             <th>空闲教室</th>
         </tr>
         </thead>
         <tbody>
-        {% for classroom in classrooms %}
+        {% for classroom in result.classrooms %}
         <tr>
-            <th>{{ classroom.time }}</th>
-            <td>{{ classroom.rooms }}</td>
+            <td>{{ classroom.time }}</td>
+            <td style="color: #586069">{{ classroom.rooms }}</td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    {% endfor %}
 </body>
 </html>

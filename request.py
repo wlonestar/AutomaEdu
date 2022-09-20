@@ -1,4 +1,3 @@
-import csv
 import hashlib
 import logging
 
@@ -118,30 +117,33 @@ class Request(object):
 
     def search_today(self):
         code = 3
-        # tea_codes = [61, 62]
-        tea_code = 61
+        tea_codes = [61, 62]
         week_num = get_weekday()
-        classrooms = []
-        for i in range(1, 13):
-            section = str(week_num) + '/' + str(i)
-            # for tea_code in tea_codes:
-            param = {
-                'weeks': get_week_num(),
-                'jslxdm': '',
-                'codeCampusListNumber': code,
-                'teaNum': tea_code,
-                'wSection': section,
-                'pageNum': 1,
-                'pageSize': 100,
-            }
-            ret = self.search_free_classroom(param)
-            # print(ret)
-            classroom = {
-                'time': classtime.get(i),
-                'rooms': ", ".join(ret)
-            }
-            classrooms.append(classroom)
-        return classrooms
+        results = []
+        for tea_code in tea_codes:
+            classrooms = []
+            for i in range(1, 13):
+                section = str(week_num) + '/' + str(i)
+                param = {
+                    'weeks': get_week_num(),
+                    'jslxdm': '',
+                    'codeCampusListNumber': code,
+                    'teaNum': tea_code,
+                    'wSection': section,
+                    'pageNum': 1,
+                    'pageSize': 100,
+                }
+                ret = self.search_free_classroom(param)
+                classroom = {
+                    'time': classtime.get(i),
+                    'rooms': ", ".join(ret),
+                }
+                classrooms.append(classroom)
+            results.append({
+                'tea': teaching_num.get(tea_code),
+                'classrooms': classrooms,
+            })
+        return results
 
     def search_aweek(self, week):
         code = campus_code.get('常州校区')
@@ -181,13 +183,4 @@ class Request(object):
                 }
                 ret = self.search_free_classroom(param)
                 result_set[row][col + 1] = ','.join(ret)
-        write_to_cvs(result_set)
-
-
-def write_to_cvs(result):
-    with open('free_classroom.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(['_', '1', '2', '3', '4', '5', '6', '7'])
-        writer.writerows(result)
-    f.close()
-    print('stored in csv file')
+        return result_set
