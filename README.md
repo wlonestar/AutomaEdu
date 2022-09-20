@@ -16,13 +16,15 @@
 git clone https://github.com/wlonestar/HHU_URP_auto_login.git
 ```
 
-修改 `main.py` 中的用户名和密码字段
+执行命令
 
-![](https://mypic-1305118058.cos.ap-hongkong.myqcloud.com/img/Snipaste_2022-09-12_14-54-49.png)
+```shell
+python main.py -u <username> -p <password>
+```
 
-将上面两行改成自己的学号和密码即可
+## 部署
 
-然后直接运行 `main.py` 即可
+todo
 
 ## 用到的 Python 库
 
