@@ -30,11 +30,11 @@ jobs:
     - name: send email
       uses: dawidd6/action-send-mail@v2
       with:
-        server_address: smtp.163.com
+        server_address: smtp.qcloudmail.com
         server_port: 465
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
-        subject: 空闲教室
+        subject: 今日空闲教室
         body: file://template/result.html
         to: wlonestar@163.com
         from: GitHub Actions
