@@ -53,7 +53,7 @@ class Request(object):
     def captcha(self):
         while True:
             src, dst = 'captcha.jpg', 'captcha_p.png'
-            response = self.session.get(captcha_url)
+            response = self.session.get(captcha_url, headers=self.headers)
             file = open(src, 'wb')
             file.write(response.content)
             file.close()
