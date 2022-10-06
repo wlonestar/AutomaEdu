@@ -9,8 +9,16 @@ def get_utc8_today():
     return datetime.now(pytz.timezone('Asia/Shanghai'))
 
 
+def get_utc8_today_format():
+    return get_utc8_today().strftime('%Y年%m月%d日')
+
+
 def get_utc8_tomorrow():
     return datetime.now(pytz.timezone('Asia/Shanghai')) + timedelta(days=1)
+
+
+def get_utc8_tomorrow_format():
+    return get_utc8_tomorrow().strftime('%Y年%m月%d日')
 
 
 # only for 2022-2023 1
@@ -21,10 +29,6 @@ def get_week_num(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
 # mon -> 1, ect..
 def get_weekday(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
     return datetime.weekday(d) + 1
-
-
-def get_format_date(d=datetime.now(pytz.timezone('Asia/Shanghai'))):
-    return d.strftime('%Y年%m月%d日')
 
 
 def process_data(src, dst):

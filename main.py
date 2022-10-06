@@ -18,9 +18,13 @@ if __name__ == '__main__':
     elif day == 'tomorrow':
         ret = request.search_tomorrow()
     print('search done')
+    if day == 'today':
+        daytime = util.get_utc8_today_format()
+    elif day == 'tomorrow':
+        daytime = util.get_utc8_tomorrow_format()
     param = {
         'results': ret,
-        'daytime': util.get_format_date()
+        'daytime': daytime,
     }
     print('start writing into file...')
     config.write2html(param)
