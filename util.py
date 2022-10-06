@@ -1,8 +1,16 @@
 import pytz
 import ddddocr
 
-from datetime import datetime
 from PIL import Image
+from datetime import datetime, timedelta
+
+
+def get_utc8_today():
+    return datetime.now(pytz.timezone('Asia/Shanghai'))
+
+
+def get_utc8_tomorrow():
+    return datetime.now(pytz.timezone('Asia/Shanghai')) + timedelta(days=1)
 
 
 # only for 2022-2023 1

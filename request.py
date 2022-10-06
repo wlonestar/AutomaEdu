@@ -1,6 +1,6 @@
+import util
 import hashlib
 import requests
-import util
 
 from bs4 import BeautifulSoup
 
@@ -58,7 +58,7 @@ class Request(object):
             file.write(response.content)
             file.close()
             res = util.captcha_code(src, dst)
-            print('captcha:', res)
+            print('captcha: {}'.format(res))
             if res is not None:
                 return res
 
@@ -76,7 +76,7 @@ class Request(object):
             if name == 'URP综合教务系统首页':
                 print('login success.')
             else:
-                print('\033[93m' + 'login failed, retrying.' + '\033[0m')
+                print('\033[93mlogin failed, retrying.\033[0m')
                 self.times -= 1
                 self.login()
         else:
@@ -97,16 +97,16 @@ class Request(object):
             val = data[i]['classroomName']
             sets.append(val)
         return sets
-
-    def search_today(self):
-        campus_code = 3             # 校区代码
-        tea_codes = [61, 62]        # 教学楼代码列表
-        week_num = util.get_weekday()    # 周数
-        results = []                # 结果集
+    
+    def search_one_day(self, day):
+        campus_code = 3 # 校区代码
+        tea_codes = [61, 62] # 教学楼代码列表
+        week_num = util.get_weekday(day) # 周数
+        results = [] # 结果集
         for tea_code in tea_codes:
             classrooms = []
             for i in range(1, 13):
-                section = str(week_num) + '/' + str(i)  # 节数
+                section = str(week_num) + '/' + str(i) # 节数
                 param = {
                     'weeks': util.get_week_num(),
                     'jslxdm': '',
@@ -127,3 +127,11 @@ class Request(object):
                 'classrooms': classrooms,
             })
         return results
+
+    def search_today(self):
+        today = util.get_utc8_today()
+        return self.search_one_day(today)
+    
+    def search_tomorrow(self):
+        tomorrow = util.get_utc8_tomorrow()
+        return self.search_one_day(tomorrow)
