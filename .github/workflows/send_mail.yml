@@ -3,7 +3,7 @@ name: send mail
 on:
   push:
   schedule:
-    - cron: "20 15 * * *" # utc+8 23:20
+    - cron: "00 14 * * *" # utc+8 22:00
 
 jobs:
   build:
