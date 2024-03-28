@@ -1,6 +1,6 @@
 # 河海大学教务系统自动登录脚本
 
-[![send mail](https://github.com/wlonestar/HHU_URP_auto_login/actions/workflows/send_mail.yml/badge.svg)](https://github.com/wlonestar/HHU_URP_auto_login/actions/workflows/send_mail.yml)
+**因教务系统更换，本项目已过时**
 
 ## 关于这个项目
 
@@ -14,9 +14,9 @@
 
 关于本项目的详细信息，可阅读下面两篇博客：
 
-[URP教务系统自动登录脚本](https://blog.wangjialei.xyz/posts/urp%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/)
+[URP教务系统自动登录脚本](https://wangjialei.xyz/posts/urp%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95/)
 
-[使用 GitHub Actions 定时发送空闲教室信息邮件](https://blog.wangjialei.xyz/posts/%E4%BD%BF%E7%94%A8-github-actions-%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E7%A9%BA%E9%97%B2%E6%95%99%E5%AE%A4%E4%BF%A1%E6%81%AF%E9%82%AE%E4%BB%B6/)
+[使用 GitHub Actions 定时发送空闲教室信息邮件](https://wangjialei.xyz/posts/%E4%BD%BF%E7%94%A8-github-actions-%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E7%A9%BA%E9%97%B2%E6%95%99%E5%AE%A4%E4%BF%A1%E6%81%AF%E9%82%AE%E4%BB%B6/)
 
 ## 使用
 
